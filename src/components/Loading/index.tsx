@@ -3,7 +3,7 @@ import React from 'react';
 import { View, ActivityIndicator, Modal, StyleSheet } from 'react-native';
 interface Props {
   modalVisible: boolean,
-  setModalVisible: any
+  setModalVisible?: any
 }
 const LoadingIndicator = ({ modalVisible, setModalVisible }: Props) => (
   <View style={{ backgroundColor: 'white' }}>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {
-  View, StyleSheet, SafeAreaView, FlatList,
+  View, SafeAreaView, FlatList,
 } from 'react-native'
 import {
   HeaderComponent,
@@ -12,21 +12,25 @@ import {
   Loading
 } from '@/components'
 import {
-  Colors, TypoGrayphy, mainPaddingH, calWidth,
+  mainPaddingH, calWidth,
 } from '@/assets/styles'
 import icons from '@/assets/icons'
-import { ADD_CATEGORY, GET_ORDER } from '@/utils/queries'
+import { ADD_CATEGORY, GET_ORDER, UPDATE_CATEGORY } from '@/utils/queries'
 import { useMutation, useQuery } from '@apollo/client';
 import { Category, CategoryList, Order } from '@/types/order'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '@/types/stack'
 import { ScreenName } from '@/constants'
+import styles from './styles';
+import ModalScreen from './Modal'
 
 
 type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen = ({ navigation }: HomeProps) => {
   const [onFocus, setOnFocus] = useState<boolean>(false)
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [currentCategory, setCurrentCategory] = useState<number>()
   const handleFocus = () => {
     setOnFocus(true)
   }
@@ -39,7 +43,11 @@ const HomeScreen = ({ navigation }: HomeProps) => {
       //'GetComments' // Query name
     ]
   });
-
+  const [updateCategory] = useMutation(UPDATE_CATEGORY, {
+    refetchQueries: [
+      { query: GET_ORDER },
+    ]
+  });
 
   const { loading, error, data } = useQuery<CategoryList>(GET_ORDER);
   const listOrder = data?.order
@@ -56,6 +64,21 @@ const HomeScreen = ({ navigation }: HomeProps) => {
     console.log(response.data);
 
 
+
+  }
+
+  const handleUpdateItem = (value: number) => {
+    setModalVisible(!modalVisible)
+    setCurrentCategory(value)
+  }
+  const onUpdateCategory = async (title: string) => {
+    const response = await updateCategory({
+      variables: {
+        id: currentCategory,
+        title: title
+      }
+    })
+    console.log("value login", response);
 
   }
 
@@ -87,7 +110,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
                     data={category}
                     renderItem={({ item }) => {
                       return (
-                        <CategoryCard style={{ marginLeft: mainPaddingH }} category={item} />
+                        <CategoryCard style={{ marginLeft: mainPaddingH }} category={item} onPressCategory={(value) => handleUpdateItem(value)} />
                       )
                     }}
                     keyExtractor={(item, index) => `List category ${index}`}
@@ -126,7 +149,6 @@ const HomeScreen = ({ navigation }: HomeProps) => {
                   </View>
                 </View>
               </View>
-
             }
             numColumns={2}
             renderItem={({ item }) => {
@@ -150,45 +172,9 @@ const HomeScreen = ({ navigation }: HomeProps) => {
         </View>
       </View>
       <SafeAreaView />
+      <ModalScreen onUpdateCategory={(title) => onUpdateCategory(title)} modalVisible={modalVisible} setShowModal={() => setModalVisible(!modalVisible)} />
     </View >
   )
 }
 
-const styles = StyleSheet.create({
-  dividerHorizontal: {
-    height: "100%",
-    width: 16,
-  },
-  productCard: {
-    paddingVertical: 16,
-    width: 165 * calWidth,
-    sImage: 133 * calWidth,
-  },
-  moreCategory: { ...TypoGrayphy.linkLargeTextBold14 },
-  titleCategory: { ...TypoGrayphy.heading5 },
-  swipperWrapper: {
-    height: 270 * calWidth,
-  },
-  labelCate: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: mainPaddingH,
-    marginBottom: 12 * calWidth,
-  },
-  divider: {
-    borderTopColor: Colors.neutralLine,
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: mainPaddingH,
-    alignItems: 'center',
-    height: 46 * calWidth,
-    marginHorizontal: mainPaddingH,
-  },
-})
 export default HomeScreen

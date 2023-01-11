@@ -26,7 +26,8 @@ query GetSearch($search: String!) {
     title: {_ilike: $search}
   }) {
     id
-    title
+    title,
+    image
   }
 }`
 
@@ -48,6 +49,18 @@ export const ADD_CATEGORY = gql`
     }
   }
 `;
+export const UPDATE_CATEGORY = gql`
+mutation UpdateCategory($id: Int!, $title: String!) {
+  update_category_by_pk(pk_columns: {
+    id: $id
+  }, _set: {
+    title: $title
+  }) {
+    title
+    image
+  }
+}
+`
 export declare function useQuery<TData = any, TVariables = OperationVariables>(
   query: DocumentNode,
   options?: QueryHookOptions<TData, TVariables>,

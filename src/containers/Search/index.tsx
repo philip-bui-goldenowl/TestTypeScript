@@ -1,26 +1,42 @@
 import icons from '@/assets/icons';
-import { calWidth, Colors, mainPaddingH } from '@/assets/styles';
-import { Text } from '@/components';
+import { calWidth, Colors, mainPaddingH, TypoGrayphy } from '@/assets/styles';
+import { CategoryCard, ProductCart, Text } from '@/components';
+import LoadingIndicator from '@/components/Loading';
+import { Category } from '@/types/order';
 import { SEARCH_CATEGORY } from '@/utils/queries';
 import { useLazyQuery, useQuery } from '@apollo/client';
-import React from 'react';
-import { Image, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, FlatList, Image, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View, } from 'react-native';
 
+interface Props {
+  navigation: any
+}
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }: Props) => {
 
-  const [searchCategory, { called, loading, data }] = useLazyQuery(SEARCH_CATEGORY, {
-    variables: {
-      search: `%adidas%`
-    },
-  });
-  const handleSearch = (value: string) => {
+  const [value, setValue] = useState<string>()
+  const [category, setCategory] = useState<Category[]>([])
 
+  const [searchCategory, { called, loading, data }] = useLazyQuery(SEARCH_CATEGORY);
+  const handleSearch = async () => {
+    const res = await searchCategory({
+      variables: {
+        search: `%${value}%`
+      },
+    })
+    setCategory(res.data?.category)
+  }
+
+  if (loading) {
+    return <LoadingIndicator modalVisible />
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text>Go back</Text>
+        </TouchableOpacity>
         <View style={{ marginHorizontal: 16, marginTop: 16 }}>
           <TouchableOpacity onPress={() => { }}>
             <View style={[styles.search, { borderColor: Colors.neutralLine }]}>
@@ -30,9 +46,10 @@ const SearchScreen = () => {
                 resizeMode="contain"
               />
               <TextInput
-                onChangeText={(text) => handleSearch(text)}
+                onChangeText={(text) => setValue(text)}
                 placeholder="Search"
                 style={{ flex: 1, marginLeft: mainPaddingH, color: Colors.neutralDark }}
+                onSubmitEditing={handleSearch}
               // onFocus={() => handleFocus()}
               />
 
@@ -40,8 +57,24 @@ const SearchScreen = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <View>
-          <Text>afafaf</Text>
+        <View >
+          <FlatList
+            data={category}
+            style={{ marginLeft: mainPaddingH, marginTop: 12 * calWidth }}
+            horizontal
+            ItemSeparatorComponent={() => {
+              return (
+                <View
+                  style={styles.dividerHorizontal} />
+              );
+            }}
+            renderItem={({ item }) => {
+              return (
+                <CategoryCard style={{ marginLeft: mainPaddingH }} category={item} onPressCategory={(value) => { }} />
+              )
+            }}
+            keyExtractor={(item) => `Productline list ${item.id}`}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -84,6 +117,35 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: Colors.primaryRed,
   },
+  dividerHorizontal: {
+    height: "100%",
+    width: 16,
+  },
+  productCard: {
+    paddingVertical: 16,
+    width: 165 * calWidth,
+    sImage: 133 * calWidth,
+  },
+  moreCategory: { ...TypoGrayphy.linkLargeTextBold14 },
+  titleCategory: { ...TypoGrayphy.heading5 },
+  swipperWrapper: {
+    height: 270 * calWidth,
+  },
+  labelCate: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: mainPaddingH,
+    marginBottom: 12 * calWidth,
+  },
+  divider: {
+    borderTopColor: Colors.neutralLine,
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  container: {
+    flex: 1,
+  },
+
+
 })
 
 export default SearchScreen
