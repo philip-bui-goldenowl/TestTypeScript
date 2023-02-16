@@ -2,17 +2,15 @@ import icons from '@/assets/icons';
 import { calWidth, Colors, mainPaddingH, TypoGrayphy } from '@/assets/styles';
 import { CategoryCard, ProductCart, Text } from '@/components';
 import LoadingIndicator from '@/components/Loading';
+import { SearchProps } from '@/types/navigation';
 import { Category } from '@/types/order';
 import { SEARCH_CATEGORY } from '@/utils/queries';
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import React, { useState } from 'react';
-import { ActivityIndicator, FlatList, Image, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View, } from 'react-native';
+import { FlatList, Image, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View, } from 'react-native';
 
-interface Props {
-  navigation: any
-}
 
-const SearchScreen = ({ navigation }: Props) => {
+const SearchScreen = ({ navigation }: SearchProps) => {
 
   const [value, setValue] = useState<string>()
   const [category, setCategory] = useState<Category[]>([])
@@ -52,8 +50,6 @@ const SearchScreen = ({ navigation }: Props) => {
                 onSubmitEditing={handleSearch}
               // onFocus={() => handleFocus()}
               />
-
-
             </View>
           </TouchableOpacity>
         </View>
@@ -70,7 +66,7 @@ const SearchScreen = ({ navigation }: Props) => {
             }}
             renderItem={({ item }) => {
               return (
-                <CategoryCard style={{ marginLeft: mainPaddingH }} category={item} onPressCategory={(value) => { }} />
+                <CategoryCard style={{ marginLeft: mainPaddingH }} category={item} onPressCategory={() => { }} />
               )
             }}
             keyExtractor={(item) => `Productline list ${item.id}`}
@@ -144,8 +140,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
-
 })
 
 export default SearchScreen

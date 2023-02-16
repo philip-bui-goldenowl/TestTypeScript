@@ -15,7 +15,8 @@ const Colors = {
   neutralLine: '#d2ddff',
   backgroudWhite: '#FFF',
   borderColor: '#d2ddff',
-  black: '#000000'
+  black: '#000000',
+  
 
 }
 

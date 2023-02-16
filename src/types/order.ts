@@ -18,5 +18,5 @@ export interface Category {
 
 export interface CategoryList {
   order: Order[]
-  category?: Category[]
+  category: Category[]
 }

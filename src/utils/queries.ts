@@ -1,14 +1,8 @@
 import { ApolloClient, ApolloError, DocumentNode, gql, NetworkStatus, ObservableQueryFields, OperationVariables, QueryHookOptions } from '@apollo/client';
 
 export const GET_ORDER = gql`
-query GetOrder {
-  category {
-    id
-    image
-    title
-    banner
-  }
-  order {
+query GetOrder($limit: Int = 5) {
+  order(limit: $limit) {
     customer_id
     discount_price
     id
@@ -19,6 +13,8 @@ query GetOrder {
   }
 }
 `;
+
+
 
 export const SEARCH_CATEGORY = gql`
 query GetSearch($search: String!) {
@@ -32,12 +28,32 @@ query GetSearch($search: String!) {
 }`
 
 export const GET_CATEGORY = gql`
-query GetOrder {
+query GetCategory {
   category {
     id
     image
+    title
+    banner
   }
 }`
+export const LOGIN_USER = gql`
+query LOGIN($email: String!, $pass: String!) {
+  user(where: {email: {_like: $email}, pass: {_like: $pass}}) {
+    id
+    name
+  }
+}`
+export const GET_USER = gql`
+query GetUser($_id: Int!) {
+  user(where: {id: {_eq: $_id}}) {
+    id
+    name,
+    phone,
+    email,
+    avatar
+  }
+}
+`
 export const ADD_CATEGORY = gql`
   mutation AddCategory($image: String!, $banner: String!,$title: String!) {
     insert_category(objects: {
@@ -58,6 +74,46 @@ mutation UpdateCategory($id: Int!, $title: String!) {
   }) {
     title
     image
+  }
+}
+`
+export const UPDATE_PASSWORD = gql`
+mutation UpdatePassword($id: Int!, $pass: String!){
+  update_user_by_pk(pk_columns: {
+    id:$id
+  }, _set: {
+    pass: $pass,
+  }){
+    id
+  }
+}
+`
+export const UPDATE_PROFILE = gql`
+mutation UpdateProfile($id: Int!, $phone: Int!){
+  update_user_by_pk(pk_columns: {
+    id:$id
+  }, _set: {
+    phone: $phone,
+  }){
+    id,
+    name,
+    email,
+    phone
+  }
+}
+`
+export const UPDATE_AVATAR = gql`
+mutation UpdateProfile($id: Int!, $avatar: String!){
+  update_user_by_pk(pk_columns: {
+    id:$id
+  }, _set: {
+    avatar: $avatar,
+  }){
+    id,
+    name,
+    email,
+    phone,
+    avatar
   }
 }
 `

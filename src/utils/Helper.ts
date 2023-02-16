@@ -28,3 +28,7 @@ export const validateEmail = (emailTest: any) => {
 export const secondsToStringTime = (seconds: number) => {
   return new Date(seconds * 1000).toISOString().substr(11, 8).split(':')
 }
+export const setValue = (value: any) =>
+  JSON.stringify(value, (k, v) => (v === undefined ? null : v));
+
+export const getValue = (value: any) => JSON.parse(value);

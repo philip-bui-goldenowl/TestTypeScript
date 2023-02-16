@@ -10,13 +10,13 @@ import Text from '../Text'
 interface Props {
   category: Category,
   style: object,
-  onPressCategory: (id: number) => void
+  onPressCategory: () => void
 }
 
 const CategoryItem = ({ category, style, onPressCategory }: Props) => {
 
   return (
-    <TouchableOpacity onPress={() => onPressCategory(category.id)}>
+    <TouchableOpacity onPress={onPressCategory}>
       <View style={{
         width: 70 * calWidth,
         alignItems: 'center',

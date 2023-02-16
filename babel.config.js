@@ -5,7 +5,7 @@ plugins.push([
   'module-resolver',
   {
     root: ['./src'],
-    extensions: ['.js', '.json','.ts','.tsx'],
+    extensions: ['.js', '.json','.ts','.tsx','.jpg'],
     alias: {
       '@': './src',
     },

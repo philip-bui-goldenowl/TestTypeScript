@@ -9,17 +9,18 @@ import {
 import icons from '@/assets/icons'
 interface Props {
   navigation: any,
-  onFocus: boolean,
-  handleClick: () => void,
+  onFocus?: boolean,
+  handleClick?: () => void,
   iconRight?: number,
   handleFocus?: () => void,
   iconNextRight?: number,
+  title?: string
 }
-const HeaderComponent = ({ navigation, onFocus, handleClick, iconRight, iconNextRight }: Props) => {
+const HeaderComponent = ({ navigation, onFocus, handleClick, iconRight, iconNextRight, title }: Props) => {
   return (
     <View style={styles.header}>
       <View style={{ flex: 1 }}>
-        <TouchableOpacity onPress={() => handleClick()}>
+        <TouchableOpacity onPress={handleClick}>
           <View style={[styles.search, { borderColor: onFocus ? Colors.primaryBlue : Colors.neutralLine }]}>
             <Image
               source={icons.search}

@@ -1,11 +1,23 @@
 
 
 export type RootStackParamList = {
+  SplashScreen: undefined,
+  Search: undefined,
+  Login: undefined,
   Home: undefined;
   Explore: undefined;
-  Search: undefined;
+  Profile: undefined;
+  UpdatePassword: {
+    userId: number | undefined
+  },
+  Phone: {
+    phone: number,
+    userId: number | undefined
+  },
+  MainTab: undefined,
 };
 
 export type MainStackParamList = {
-  MainTab: undefined
+  Home: undefined;
+  Profile: undefined;
 }

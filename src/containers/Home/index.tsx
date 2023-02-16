@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
-  View, SafeAreaView, FlatList,
+  View, SafeAreaView, FlatList, ActivityIndicator,
 } from 'react-native'
 import {
   HeaderComponent,
@@ -9,15 +9,14 @@ import {
   SaleOffComponent,
   CategoryCard,
   SwiperHorizontal,
-  Loading
 } from '@/components'
 import {
   mainPaddingH, calWidth,
 } from '@/assets/styles'
 import icons from '@/assets/icons'
-import { ADD_CATEGORY, GET_ORDER, UPDATE_CATEGORY } from '@/utils/queries'
-import { useMutation, useQuery } from '@apollo/client';
-import { Category, CategoryList, Order } from '@/types/order'
+import { ADD_CATEGORY, GET_CATEGORY, GET_ORDER, UPDATE_CATEGORY } from '@/utils/queries'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { CategoryList, Order, Category } from '@/types/order'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '@/types/stack'
 import { ScreenName } from '@/constants'
@@ -25,15 +24,22 @@ import styles from './styles';
 import ModalScreen from './Modal'
 
 
-type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type HomeProps = NativeStackScreenProps<RootStackParamList, ScreenName.HOME>;
 
 const HomeScreen = ({ navigation }: HomeProps) => {
   const [onFocus, setOnFocus] = useState<boolean>(false)
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [currentCategory, setCurrentCategory] = useState<number>()
+  const [title, setTitle] = useState<string>()
+  const [page, setPage] = useState(5)
+  const [listOrder, setListOrder] = useState<Order[]>([])
+  const [isLoadMore, setIsLoadMore] = useState(false)
+  const onEndReachedCalledDuringMoment = useRef(true)
+
   const handleFocus = () => {
     setOnFocus(true)
   }
+
   const handleViewProductDetail = (order: Order) => {
     navigation.navigate('Explore')
   }
@@ -43,15 +49,41 @@ const HomeScreen = ({ navigation }: HomeProps) => {
       //'GetComments' // Query name
     ]
   });
-  const [updateCategory] = useMutation(UPDATE_CATEGORY, {
+  const [updateCategory, { loading }] = useMutation(UPDATE_CATEGORY, {
     refetchQueries: [
-      { query: GET_ORDER },
+      { query: GET_CATEGORY },
     ]
   });
+  const [GetOrder] = useLazyQuery<CategoryList>(GET_ORDER);
+  const { data } = useQuery(GET_CATEGORY)
+  const categories: Category[] = data?.category
 
-  const { loading, error, data } = useQuery<CategoryList>(GET_ORDER);
-  const listOrder = data?.order
-  const category = data?.category
+  useEffect(() => {
+    getData(page)
+  }, [])
+
+  useEffect(() => {
+    if (page > 5) {
+      getData(page)
+    }
+  }, [page])
+
+
+
+  const getData = async (page: number) => {
+    const response = await GetOrder({
+      variables: {
+        limit: page
+      }
+    })
+    if (response.data) {
+      const orders: Order[] = response.data?.order
+      setListOrder(orders)
+    }
+    setIsLoadMore(false)
+    onEndReachedCalledDuringMoment.current = true;
+  }
+
 
   const handleAddMore = async () => {
     const response = await addCategory({
@@ -62,14 +94,13 @@ const HomeScreen = ({ navigation }: HomeProps) => {
       }
     })
     console.log(response.data);
-
-
-
   }
 
-  const handleUpdateItem = (value: number) => {
+  const handleUpdateItem = (id: number, title: string) => {
     setModalVisible(!modalVisible)
-    setCurrentCategory(value)
+    setCurrentCategory(id)
+
+    setTitle(title)
   }
   const onUpdateCategory = async (title: string) => {
     const response = await updateCategory({
@@ -78,17 +109,29 @@ const HomeScreen = ({ navigation }: HomeProps) => {
         title: title
       }
     })
+    getData(5)
     console.log("value login", response);
 
   }
 
-  if (loading) {
-    return <Loading modalVisible setModalVisible={() => { }} />
+  const handleLoadMoreHomePage = () => {
+    setIsLoadMore(true)
+    const newPage = page + 10
+    setPage(newPage)
   }
+  const renderFooter = () => (
+    <View >
+      <ActivityIndicator size={"large"} />
+    </View>
+  );
   return (
     <View style={styles.container} >
       <SafeAreaView />
-      <HeaderComponent navigation={navigation} handleFocus={handleFocus} onFocus={onFocus} handleClick={() => navigation.navigate(ScreenName.SEARCH)} />
+      <HeaderComponent
+        navigation={navigation}
+        handleFocus={handleFocus}
+        onFocus={onFocus}
+        handleClick={() => navigation.navigate(ScreenName.SEARCH)} />
       <View style={styles.divider} />
       <View style={styles.container}>
         <View style={{ paddingTop: mainPaddingH, flex: 1 }}>
@@ -98,7 +141,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
             ListHeaderComponent={
               <View>
                 <View style={styles.swipperWrapper}>
-                  <SwiperHorizontal products={category || []} handleChooseSwipper={() => {
+                  <SwiperHorizontal products={categories || []} handleChooseSwipper={() => {
                   }} />
                 </View>
                 <View>
@@ -107,13 +150,13 @@ const HomeScreen = ({ navigation }: HomeProps) => {
                     horizontal
                     style={{ marginTop: 12 * calWidth, marginBottom: 24 * calWidth }}
                     showsHorizontalScrollIndicator={false}
-                    data={category}
+                    data={categories}
                     renderItem={({ item }) => {
                       return (
-                        <CategoryCard style={{ marginLeft: mainPaddingH }} category={item} onPressCategory={(value) => handleUpdateItem(value)} />
+                        <CategoryCard style={{ marginLeft: mainPaddingH }} category={item} onPressCategory={() => handleUpdateItem(item.id, item.title)} />
                       )
                     }}
-                    keyExtractor={(item, index) => `List category ${index}`}
+                    keyExtractor={(item, index) => `List category ${item.id}`}
                   />
                 </View>
                 <View>
@@ -139,7 +182,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
                         />
                       )
                     }}
-                    keyExtractor={(item) => `Productline list ${item.id}`}
+                    keyExtractor={(item) => `Productline list one ${item.id}`}
                   />
                 </View>
                 <View style={{ marginTop: 24 * calWidth }}>
@@ -167,12 +210,25 @@ const HomeScreen = ({ navigation }: HomeProps) => {
               marginTop: mainPaddingH,
               marginHorizontal: mainPaddingH,
             }}
-            keyExtractor={(item) => `ProductLike list ${item?.id}`}
+            onEndReached={() => {
+              if (!onEndReachedCalledDuringMoment.current) {
+                handleLoadMoreHomePage();
+              }
+            }}
+            onMomentumScrollBegin={() => {
+              onEndReachedCalledDuringMoment.current = false;
+            }}
+            keyExtractor={(item) => `ProductLike  ${item.id}`}
+            ListFooterComponent={() => isLoadMore ? renderFooter() : null}
           />
         </View>
       </View>
       <SafeAreaView />
-      <ModalScreen onUpdateCategory={(title) => onUpdateCategory(title)} modalVisible={modalVisible} setShowModal={() => setModalVisible(!modalVisible)} />
+      <ModalScreen
+        title={title}
+        onUpdateCategory={(title) => onUpdateCategory(title)}
+        modalVisible={modalVisible}
+        setShowModal={() => setModalVisible(!modalVisible)} />
     </View >
   )
 }

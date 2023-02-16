@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput } from "react-native";
 
 interface Props {
   modalVisible: boolean
   setShowModal: (value: boolean) => void
-  onUpdateCategory: (title: string) => void
+  onUpdateCategory: (title: string) => void,
+  title: string | undefined
 }
-const ModalScreen = ({ modalVisible, setShowModal, onUpdateCategory }: Props) => {
+const ModalScreen = ({ modalVisible, setShowModal, onUpdateCategory, title }: Props) => {
   // const [modalVisible, setModalVisible] = useState(true);
-  const [value, setValue] = useState<string>('');
+
+  const [value, setValue] = useState(title);
+
+  useEffect(() => {
+    setValue(title)
+  }, [title])
   return (
     <Modal
       animationType="slide"
