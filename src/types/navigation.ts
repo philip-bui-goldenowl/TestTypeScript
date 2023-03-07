@@ -10,3 +10,4 @@ export type UpdateProps = NativeStackScreenProps<RootStackParamList, ScreenName.
 export type LoginProps = NativeStackScreenProps<RootStackParamList, ScreenName.LOGIN>;
 export type SplashProps = NativeStackScreenProps<RootStackParamList, ScreenName.SPLASH_SCREEN>;
 export type SearchProps = NativeStackScreenProps<RootStackParamList, ScreenName.SEARCH>;
+export type ProductDetailProps = NativeStackScreenProps<RootStackParamList, ScreenName.PRODUCT_DETAIL>;

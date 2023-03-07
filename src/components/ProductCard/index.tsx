@@ -1,11 +1,12 @@
 import React from 'react'
 import {
-  View, Dimensions, StyleSheet, TouchableOpacity
+  View, Dimensions, StyleSheet,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Text from '../Text'
 import { TypoGrayphy, Colors } from '../../assets/styles'
 import { Order } from '@/types/order'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const { width } = Dimensions.get('window')
 const calWidth = width / 375
@@ -18,7 +19,7 @@ interface Props {
 const ProductCart = ({ product, handleChooseItem, style, margin, }: Props) => {
   const widthImage = width / 2 - 64
   return (
-    <TouchableOpacity onPress={() => handleChooseItem()}>
+    <TouchableOpacity onPress={handleChooseItem}>
       <View style={[{
         paddingHorizontal: 16,
         borderColor: Colors.borderColor,
@@ -29,7 +30,7 @@ const ProductCart = ({ product, handleChooseItem, style, margin, }: Props) => {
       }, { ...style }]}
       >
         <FastImage
-          source={{ uri: product.image }}
+          source={{ uri: product?.image }}
           style={
             {
               width: widthImage,

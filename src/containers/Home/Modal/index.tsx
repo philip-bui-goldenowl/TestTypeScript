@@ -5,11 +5,9 @@ interface Props {
   modalVisible: boolean
   setShowModal: (value: boolean) => void
   onUpdateCategory: (title: string) => void,
-  title: string | undefined
+  title?: string
 }
 const ModalScreen = ({ modalVisible, setShowModal, onUpdateCategory, title }: Props) => {
-  // const [modalVisible, setModalVisible] = useState(true);
-
   const [value, setValue] = useState(title);
 
   useEffect(() => {
@@ -28,16 +26,10 @@ const ModalScreen = ({ modalVisible, setShowModal, onUpdateCategory, title }: Pr
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Text style={styles.modalText}>Cập nhật tên sản phẩm!</Text>
-          <View style={{
-            flexDirection: 'row',
-            width: 300,
-            marginBottom: 16,
-            borderWidth: 0.5,
-            borderRadius: 8
-          }}>
+          <View style={styles.viewInput}>
             <TextInput
               value={value}
-              style={{ paddingVertical: 8, flex: 1, fontSize: 16, marginLeft: 10 }}
+              style={styles.input}
               onChangeText={(text) => {
                 setValue(text)
               }} />
@@ -47,7 +39,7 @@ const ModalScreen = ({ modalVisible, setShowModal, onUpdateCategory, title }: Pr
               style={[styles.button, styles.buttonOpen]}
               onPress={() => {
                 setShowModal(!modalVisible)
-                onUpdateCategory(value)
+                onUpdateCategory(value || '')
                 setValue('')
               }}
             >
@@ -72,6 +64,14 @@ const ModalScreen = ({ modalVisible, setShowModal, onUpdateCategory, title }: Pr
 export default ModalScreen
 
 const styles = StyleSheet.create({
+  input: { paddingVertical: 8, flex: 1, fontSize: 16, marginLeft: 10 },
+  viewInput: {
+    flexDirection: 'row',
+    width: 300,
+    marginBottom: 16,
+    borderWidth: 0.5,
+    borderRadius: 8
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",

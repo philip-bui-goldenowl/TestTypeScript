@@ -24,11 +24,11 @@ const slice = createSlice({
     setInfoUser(state, action: PayloadAction<User>) {
       const user = action.payload
       state.user = user
-    }
+    },
+    clearAuth: (state) => {
+      state.user = null
+    },
   },
-  // extraReducers: {
-
-  // },
 });
-export const { setInfoUser } = slice.actions
+export const { setInfoUser, clearAuth } = slice.actions
 export default slice.reducer;

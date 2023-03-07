@@ -15,6 +15,10 @@ export type RootStackParamList = {
     userId: number | undefined
   },
   MainTab: undefined,
+  ProductDetail: {
+    id: number,
+    name: string
+  }
 };
 
 export type MainStackParamList = {

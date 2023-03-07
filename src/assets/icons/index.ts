@@ -33,6 +33,7 @@ export const minus = require('./minus_16.png')
 export const list = require('./list.png')
 export const star = require('./star.png')
 export const phoduct2 = require('./phoduct2.png')
+const upload = require('./upload.png')
 import iconClose from './iconClose.png';
 import logoutIcon from './logoutIcon.png';
 import starActive from './starActive.png';
@@ -47,6 +48,7 @@ import userIcon from './user.png';
 
 
 export default {
+  upload,
   userIcon,
   love,
   notification,

@@ -6,7 +6,9 @@ export interface Order {
   product: string,
   purchase_price: string,
   transaction_id: string,
-  image: string
+  image: string,
+  color: string,
+  size: string
 }
 
 export interface Category {

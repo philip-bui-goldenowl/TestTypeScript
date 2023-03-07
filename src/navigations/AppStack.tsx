@@ -11,6 +11,7 @@ import SplashScreen from '@/containers/Splash';
 import Profile from '@/containers/Profile';
 import UpdatePassword from '@/containers/Profile/UpdatePassword';
 import Phone from '@/containers/Profile/Phone';
+import ProductDetail from '@/containers/ProductDetail';
 
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -42,6 +43,7 @@ const AppStack = () => {
       <RootStack.Screen name={ScreenName.SEARCH} component={SearchScreen} />
       <RootStack.Screen name={ScreenName.UPDATE_PASSWORD} component={UpdatePassword} />
       <RootStack.Screen name={ScreenName.PHONE} component={Phone} />
+      <RootStack.Screen name={ScreenName.PRODUCT_DETAIL} component={ProductDetail} />
     </RootStack.Navigator>
   );
 };

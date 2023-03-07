@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  SafeAreaView, View, StyleSheet, TouchableOpacity, Image, Text
+  SafeAreaView, View, StyleSheet, Image, Text, TouchableOpacity
 } from 'react-native'
 import { calWidth, Colors, TypoGrayphy } from '@/assets/styles'
 import { MenuTab } from '@/constants'

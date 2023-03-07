@@ -10,8 +10,12 @@ import Button from './Button';
 import Header from './Header';
 import TextInput from './TextInput';
 import HeaderCommon from './HeaderCommon';
+import SelectSizeOption from './SelectSizeOption';
+import SelectColorOption from './SelectColorOption';
 
 export {
+  SelectColorOption,
+  SelectSizeOption,
   HeaderCommon,
   TextInput,
   Header,

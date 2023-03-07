@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import {
   View, SafeAreaView, FlatList, ActivityIndicator,
 } from 'react-native'
@@ -14,7 +14,7 @@ import {
   mainPaddingH, calWidth,
 } from '@/assets/styles'
 import icons from '@/assets/icons'
-import { ADD_CATEGORY, GET_CATEGORY, GET_ORDER, UPDATE_CATEGORY } from '@/utils/queries'
+import { GET_CATEGORY, GET_ORDER, UPDATE_CATEGORY } from '@/utils/queries'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { CategoryList, Order, Category } from '@/types/order'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -22,6 +22,8 @@ import { RootStackParamList } from '@/types/stack'
 import { ScreenName } from '@/constants'
 import styles from './styles';
 import ModalScreen from './Modal'
+import InsertModal from '../ProductDetail/Modal';
+import { useFocusEffect } from '@react-navigation/native'
 
 
 type HomeProps = NativeStackScreenProps<RootStackParamList, ScreenName.HOME>;
@@ -29,6 +31,7 @@ type HomeProps = NativeStackScreenProps<RootStackParamList, ScreenName.HOME>;
 const HomeScreen = ({ navigation }: HomeProps) => {
   const [onFocus, setOnFocus] = useState<boolean>(false)
   const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [modalAddVisible, setModalAddVisible] = useState<boolean>(false)
   const [currentCategory, setCurrentCategory] = useState<number>()
   const [title, setTitle] = useState<string>()
   const [page, setPage] = useState(5)
@@ -41,14 +44,13 @@ const HomeScreen = ({ navigation }: HomeProps) => {
   }
 
   const handleViewProductDetail = (order: Order) => {
-    navigation.navigate('Explore')
+    console.log("orderrr", order.id);
+
+    navigation.navigate(ScreenName.PRODUCT_DETAIL, {
+      id: order.id,
+      name: order.product
+    })
   }
-  const [addCategory] = useMutation(ADD_CATEGORY, {
-    refetchQueries: [
-      { query: GET_ORDER }, // DocumentNode object parsed with gql
-      //'GetComments' // Query name
-    ]
-  });
   const [updateCategory, { loading }] = useMutation(UPDATE_CATEGORY, {
     refetchQueries: [
       { query: GET_CATEGORY },
@@ -68,6 +70,14 @@ const HomeScreen = ({ navigation }: HomeProps) => {
     }
   }, [page])
 
+  useFocusEffect(
+    useCallback(() => {
+      console.log("valuessss");
+
+      getData(5)
+    }, [navigation])
+  )
+
 
 
   const getData = async (page: number) => {
@@ -78,6 +88,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
     })
     if (response.data) {
       const orders: Order[] = response.data?.order
+
       setListOrder(orders)
     }
     setIsLoadMore(false)
@@ -86,14 +97,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
 
 
   const handleAddMore = async () => {
-    const response = await addCategory({
-      variables: {
-        image: 'https://media.istockphoto.com/id/1303978937/vi/anh/gi%C3%A0y-th%E1%BB%83-thao-m%C3%A0u-tr%E1%BA%AFng-tr%C3%AAn-n%E1%BB%81n-gradient-m%C3%A0u-xanh-th%E1%BB%9Di-trang-nam-gi%C3%A0y-th%E1%BB%83-thao-gi%C3%A0y-th%E1%BB%83-thao.jpg?s=612x612&w=is&k=20&c=6xh5F3Zx30C8pBSSNhLttCcmxbHQ-HZLaq-FSL6COgA=',
-        banner: 'https://media.istockphoto.com/id/1303978937/vi/anh/gi%C3%A0y-th%E1%BB%83-thao-m%C3%A0u-tr%E1%BA%AFng-tr%C3%AAn-n%E1%BB%81n-gradient-m%C3%A0u-xanh-th%E1%BB%9Di-trang-nam-gi%C3%A0y-th%E1%BB%83-thao-gi%C3%A0y-th%E1%BB%83-thao.jpg?s=612x612&w=is&k=20&c=6xh5F3Zx30C8pBSSNhLttCcmxbHQ-HZLaq-FSL6COgA=',
-        title: 'onNew'
-      }
-    })
-    console.log(response.data);
+    setModalAddVisible(!modalAddVisible)
   }
 
   const handleUpdateItem = (id: number, title: string) => {
@@ -113,6 +117,8 @@ const HomeScreen = ({ navigation }: HomeProps) => {
     console.log("value login", response);
 
   }
+
+
 
   const handleLoadMoreHomePage = () => {
     setIsLoadMore(true)
@@ -199,7 +205,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
                 <ProductCart
                   product={item}
                   handleChooseItem={() => {
-                    // navigation.navigate(SCREEN_NAME.ProductDetail, { nameProduct: 'Nike Air Max 270 Rea...' })
+                    // navigation.navigate(ScreenName.PRODUCT_DETAIL, { nameProduct: 'Nike Air Max 270 Rea...' })
                   }}
                   style={styles.productCard}
                 />
@@ -229,6 +235,11 @@ const HomeScreen = ({ navigation }: HomeProps) => {
         onUpdateCategory={(title) => onUpdateCategory(title)}
         modalVisible={modalVisible}
         setShowModal={() => setModalVisible(!modalVisible)} />
+      <InsertModal
+        title='adaf'
+        onUpdateCategory={(title) => { }}
+        modalVisible={modalAddVisible}
+        setShowModal={() => setModalAddVisible(!modalAddVisible)} />
     </View >
   )
 }

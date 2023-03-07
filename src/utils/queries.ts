@@ -40,7 +40,10 @@ export const LOGIN_USER = gql`
 query LOGIN($email: String!, $pass: String!) {
   user(where: {email: {_like: $email}, pass: {_like: $pass}}) {
     id
-    name
+    name, 
+    phone,
+    email,
+    avatar
   }
 }`
 export const GET_USER = gql`
@@ -117,6 +120,71 @@ mutation UpdateProfile($id: Int!, $avatar: String!){
   }
 }
 `
+export const GET_PRODUCT_WITH_ID = gql`
+query getProductWithId($_id: Int!) {
+  order(where: {id: {_eq: $_id}}) {
+    customer_id
+    discount_price
+    id
+    order_date
+    product
+    purchase_price
+    image,
+    color,
+    size
+  }
+}
+`
+export const UPDATE_PHOTO_PRODUCT = gql`
+mutation UpdateProtoProduct($id: Int!, $image: String!){
+  update_order_by_pk(pk_columns: {
+    id:$id
+  }, _set: {
+    image: $image,
+  }){
+    customer_id
+    discount_price
+    id
+    order_date
+    product
+    purchase_price
+    image,
+    color,
+    size
+  }
+}
+`
+export const UPDATE_PRODUCT = gql`
+mutation UpdateProduct($id: Int!, $size: String!, $color: String!){
+  update_order_by_pk(pk_columns: {
+    id:$id
+  }, _set: {
+    size: $size,
+    color: $color,
+  }){
+    customer_id
+    discount_price
+    id
+    order_date
+    product
+    purchase_price
+    image,
+    color,
+    size
+  }
+}
+`
+export const ADD_PRODUCT = gql`
+  mutation AddProduct($image: String!,$product: String!) {
+    insert_order(objects: {
+      image: $image, product: $product
+    }) {
+      returning {
+        product
+      }
+    }
+  }
+`;
 export declare function useQuery<TData = any, TVariables = OperationVariables>(
   query: DocumentNode,
   options?: QueryHookOptions<TData, TVariables>,

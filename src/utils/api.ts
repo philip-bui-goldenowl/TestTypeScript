@@ -11,6 +11,16 @@ const instancesInfo = [
       'X-RapidAPI-Host': 'taobao-api.p.rapidapi.com'
     },
   },
+  {
+    name: 'apiUpload',
+    secure: false,
+    baseURL: 'https://api.cloudinary.com/v1_1/dgputbexe/image/',
+    headers: {
+      // API_ACCESS_KEY: Env.API_ACCESS_KEY,
+      //'X-RapidAPI-Key': '1ba312e682msh7d1c65bb0194b27p154589jsn5569b3cd7f01',
+      //'X-RapidAPI-Host': 'taobao-api.p.rapidapi.com'
+    },
+  },
 ];
 
 const createInstance = ({ baseURL, headers }: any) => {
@@ -58,4 +68,6 @@ const instances = instancesInfo.reduce((obj: any, instanceInfo) => {
   return obj;
 }, {});
 
-export const { api } = instances;
+
+
+export const { api, apiUpload } = instances;

@@ -7,13 +7,16 @@ import {
 } from '../../assets/styles'
 import { back } from '@/assets/icons'
 import Text from '../Text'
+import { NavigationProp } from '@react-navigation/native'
 interface Props {
-  navigation?: any,
+  navigation: NavigationProp<any, any>,
   title?: string,
   icon?: number,
-  iconRight?: number
+  iconRight?: number,
+  onPressRight?: () => void,
+  disabled?: boolean
 }
-const Header = ({ navigation, title, icon, iconRight }: Props) => {
+const Header = ({ navigation, title, icon, iconRight, onPressRight, disabled = true }: Props) => {
   return (
     <View>
       <SafeAreaView />
@@ -26,7 +29,9 @@ const Header = ({ navigation, title, icon, iconRight }: Props) => {
             </View>
           </TouchableOpacity>
           <View style={{ flexDirection: 'row' }}>
-            <Image source={icon} style={styles.icon} resizeMode="contain" />
+            <TouchableOpacity disabled={disabled} onPress={onPressRight}>
+              <Image source={icon} style={styles.icon} resizeMode="contain" />
+            </TouchableOpacity>
             {iconRight && iconRight ? <Image
               source={iconRight}
               style={styles.iconRight}

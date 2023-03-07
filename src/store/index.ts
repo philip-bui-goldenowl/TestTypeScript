@@ -5,7 +5,9 @@ const reducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  if (action.type === 'auth/clearAuth/fulfilled') {
+  console.log("staytpeee", action);
+
+  if (action.type === 'auth/clearAuth') {
     state = undefined;
   }
   return reducer(state, action);

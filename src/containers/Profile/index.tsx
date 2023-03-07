@@ -20,16 +20,24 @@ import {
 import ProfileItem from './ProfileItem'
 import { RootState } from '@/store'
 import { Text } from '@/components'
-import { ScreenName } from '@/constants'
+import { ScreenName, StorageKey, uploadUrl } from '@/constants'
 import { ProfileProps } from '@/types/navigation'
 import * as ImagePicker from 'react-native-image-picker';
 import { useMutation } from '@apollo/client'
 import { UPDATE_AVATAR } from '@/utils/queries'
-import { setInfoUser } from '@/store/auth/slice'
+import { clearAuth, setInfoUser } from '@/store/auth/slice'
+import Service from '@/services/service'
+import StoredData from '@/utils/StoredData'
 interface Source {
   uri: string | undefined,
   type: string | undefined,
   name: string | undefined,
+}
+const options: ImagePicker.ImageLibraryOptions = {
+  selectionLimit: 0,
+  mediaType: 'photo',
+  includeBase64: false,
+  includeExtra: true,
 }
 const Profile = ({ navigation }: ProfileProps) => {
   const { user } = useSelector((state: RootState) => state.auth)
@@ -53,16 +61,15 @@ const Profile = ({ navigation }: ProfileProps) => {
         }
         cloudinaryUpload(source)
       }
-
     }
   }
-  const cloudinaryUpload = (source: Source) => {
+  const cloudinaryUpload = async (source: Source) => {
     setLoading(true)
     const data = new FormData()
     data.append('file', source)
     data.append('upload_preset', 'uploadProfile')
     data.append("cloud_name", "dgputbexe")
-    fetch("https://api.cloudinary.com/v1_1/dgputbexe/image/upload", {
+    fetch(uploadUrl, {
       method: "post",
       body: data
     }).then(res => res.json()).
@@ -83,19 +90,25 @@ const Profile = ({ navigation }: ProfileProps) => {
         Alert.alert("An Error Occured While Uploading")
       })
   }
+  const handleLogOut = async () => {
+    navigation.navigate(ScreenName.LOGIN)
+    await StoredData.set(StorageKey.memberId, '')
+    await dispatch(clearAuth())
+  }
   return (
     <View style={styles.container}>
       <SafeAreaView />
       <View style={styles.viewWrapper}>
         <View style={styles.viewProfile}>
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={styles.row}>
             {loading && <ActivityIndicator size={'large'} color={Colors.primaryBlue} style={{ position: 'absolute', zIndex: 10 }} />}
-            <Image source={user.avatar ? { uri: user.avatar } : avatar} style={styles.avatar} />
+            <Image onLoadStart={() => setLoading(true)}
+              onLoadEnd={() => setLoading(false)} source={user?.avatar ? { uri: user?.avatar } : avatar} style={styles.avatar} />
           </View>
           <TouchableOpacity onPress={selectPhotoTapped}>
             <View style={styles.viewAvatarName}>
-              <Text style={styles.titleName}>{user.name}</Text>
-              <Text style={styles.gmail}>{user.email}</Text>
+              <Text style={styles.titleName}>{user?.name}</Text>
+              <Text style={styles.gmail}>{user?.email}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -107,17 +120,17 @@ const Profile = ({ navigation }: ProfileProps) => {
         <ProfileItem
           image={messageBlue}
           label="Email"
-          value={user.email}
+          value={user?.email}
           disabled
           nextScreen={() => { }}
         />
         <ProfileItem
           image={phoneBlue}
           label="Phone Number"
-          value={user.phone.toString()}
+          value={user?.phone.toString()}
           nextScreen={() => navigation.navigate(ScreenName.PHONE, {
-            phone: user.phone,
-            userId: user.id,
+            phone: user?.phone,
+            userId: user?.id,
           })}
         />
         <ProfileItem
@@ -125,29 +138,21 @@ const Profile = ({ navigation }: ProfileProps) => {
           label="Change Password"
           value="•••••••••••••••••"
           nextScreen={() => navigation.navigate(ScreenName.UPDATE_PASSWORD, {
-            userId: user.id
+            userId: user?.id
           })}
+        />
+        <ProfileItem
+          image={passIcon}
+          label="Logout"
+          nextScreen={handleLogOut}
         />
       </View>
     </View >
   )
 }
-// interface Action {
-//   title: string;
-//   type: 'capture' | 'library';
-//   options: ImagePicker.ImageLibraryOptions;
-// }
-// interface MediaType {
-//   mediaType: string,
-// }
-const options: ImagePicker.ImageLibraryOptions = {
-  selectionLimit: 0,
-  mediaType: 'photo',
-  includeBase64: false,
-  includeExtra: true,
-}
 
 const styles = StyleSheet.create({
+  row: { justifyContent: 'center', alignItems: 'center' },
   gmail: {
     ...TypoGrayphy.bodyNormalTextRegular,
     color: Colors.neutralGrey,

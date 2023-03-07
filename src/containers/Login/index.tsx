@@ -8,7 +8,7 @@ import { Text, Button } from '@/components'
 import {
   logoWhite, message,
 } from '@/assets/icons'
-import { useLazyQuery, useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { LOGIN_USER } from '@/utils/queries'
 import { setInfoUser } from '@/store/auth/slice'
 import { ScreenName, StorageKey } from '@/constants'
@@ -138,15 +138,15 @@ const LoginScreen = (props: LoginProps) => {
               Login with facebook
             </Text>
           </View> */}
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Text style={styles.labelForgotPass}>Forget password</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleRegister}>
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity onPress={handleRegister}>
             <View style={styles.viewDontAccount}>
               <Text style={styles.titleDontAccount}>Don`t have a account?</Text>
               <Text style={styles.buttonRegister}>Register</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <ModalInfo
           onClose={() => { }}
