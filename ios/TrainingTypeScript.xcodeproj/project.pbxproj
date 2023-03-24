@@ -40,13 +40,14 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TrainingTypeScript/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-TrainingTypeScript-TrainingTypeScriptTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrainingTypeScript-TrainingTypeScriptTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-TrainingTypeScript.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainingTypeScript.debug.xcconfig"; path = "Target Support Files/Pods-TrainingTypeScript/Pods-TrainingTypeScript.debug.xcconfig"; sourceTree = "<group>"; };
-		4ACA0F21F456408BBFA53565 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		4ACA0F21F456408BBFA53565 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-TrainingTypeScript.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainingTypeScript.release.xcconfig"; path = "Target Support Files/Pods-TrainingTypeScript/Pods-TrainingTypeScript.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-TrainingTypeScript-TrainingTypeScriptTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainingTypeScript-TrainingTypeScriptTests.debug.xcconfig"; path = "Target Support Files/Pods-TrainingTypeScript-TrainingTypeScriptTests/Pods-TrainingTypeScript-TrainingTypeScriptTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-TrainingTypeScript.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrainingTypeScript.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TrainingTypeScript/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-TrainingTypeScript-TrainingTypeScriptTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainingTypeScript-TrainingTypeScriptTests.release.xcconfig"; path = "Target Support Files/Pods-TrainingTypeScript-TrainingTypeScriptTests/Pods-TrainingTypeScript-TrainingTypeScriptTests.release.xcconfig"; sourceTree = "<group>"; };
-		98EDF30B28D2479FBBBDC52A /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		98EDF30B28D2479FBBBDC52A /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		E210A60329B84E2D00EED219 /* TrainingTypeScript.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TrainingTypeScript.entitlements; path = TrainingTypeScript/TrainingTypeScript.entitlements; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -90,6 +91,7 @@
 		13B07FAE1A68108700A75B9A /* TrainingTypeScript */ = {
 			isa = PBXGroup;
 			children = (
+				E210A60329B84E2D00EED219 /* TrainingTypeScript.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -107,7 +109,6 @@
 				98EDF30B28D2479FBBBDC52A /* Poppins-Regular.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -502,6 +503,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TrainingTypeScript/TrainingTypeScript.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TrainingTypeScript/Info.plist;
@@ -528,6 +530,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TrainingTypeScript/TrainingTypeScript.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = TrainingTypeScript/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

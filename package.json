@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.3",
+    "@invertase/react-native-apple-authentication": "^2.2.2",
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-navigation/bottom-tabs": "^6.5.2",
     "@react-navigation/native": "^6.1.1",
@@ -26,8 +27,10 @@
     "prettier": "^2.8.2",
     "react": "18.1.0",
     "react-native": "0.70.6",
+    "react-native-calendars": "^1.1293.0",
     "react-native-dotenv": "^3.4.6",
     "react-native-fast-image": "^8.6.3",
+    "react-native-fbsdk-next": "^11.1.0",
     "react-native-flipper": "^0.176.1",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-image-picker": "^5.0.1",

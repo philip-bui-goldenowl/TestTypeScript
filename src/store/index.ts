@@ -1,11 +1,11 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import auth from './auth/slice';
+import product from './product/slice';
 const reducer = combineReducers({
-  auth,
+  auth, product
 });
 
 const rootReducer = (state, action) => {
-  console.log("staytpeee", action);
 
   if (action.type === 'auth/clearAuth') {
     state = undefined;

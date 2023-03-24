@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: mainPaddingH,
     borderRadius: 5 * calWidth,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: StyleSheet.hairlineWidth * 2,
     borderColor: Colors.neutralLine,
     marginTop: mainPaddingH,
   },

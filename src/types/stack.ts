@@ -18,7 +18,10 @@ export type RootStackParamList = {
   ProductDetail: {
     id: number,
     name: string
-  }
+  },
+  UpdateInfoUser: undefined;
+  Product: undefined,
+  ShortBy: undefined,
 };
 
 export type MainStackParamList = {

@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  View, TextInput, StyleSheet, Image,
+  View, TextInput, StyleSheet, Image, TouchableOpacity,
 } from 'react-native'
 import {
   calWidth,
@@ -19,8 +19,10 @@ interface Props {
   isActive?: boolean,
   secure?: boolean,
   error?: string,
+  isInput?: boolean,
+  onPressInput?: () => void,
 }
-const Input = ({ label, iconRight, placeholder, iconLeft, handleOnchange, onFocus, isActive, secure, error, ...props }: Props) => {
+const Input = ({ onPressInput, isInput, label, iconRight, placeholder, iconLeft, handleOnchange, onFocus, isActive, secure, error, ...props }: Props) => {
 
   return (
     <View style={{
@@ -29,7 +31,7 @@ const Input = ({ label, iconRight, placeholder, iconLeft, handleOnchange, onFocu
     >
       <Text style={{ ...TypoGrayphy.heading5 }}>{label}</Text>
       <View style={[styles.borderInput, { borderColor: isActive ? Colors.primaryBlue : Colors.neutralLine }]}>
-        {iconLeft && iconLeft ? <Image
+        {iconLeft && iconLeft && <Image
           source={iconLeft}
           style={{
             marginLeft: mainPaddingH,
@@ -37,8 +39,8 @@ const Input = ({ label, iconRight, placeholder, iconLeft, handleOnchange, onFocu
             height: 24 * calWidth,
             tintColor: isActive ? Colors.primaryBlue : Colors.neutralGrey,
           }}
-        /> : null}
-        <TextInput
+        />}
+        {!isInput ? <TextInput
           {...props}
           autoCorrect={false}
           style={styles.input}
@@ -46,9 +48,11 @@ const Input = ({ label, iconRight, placeholder, iconLeft, handleOnchange, onFocu
           onFocus={onFocus}
           onChangeText={(text) => handleOnchange(text)}
           secureTextEntry={secure}
-        // secure
-        />
-        {iconRight && iconRight ? <Image source={iconRight} style={{ marginHorizontal: mainPaddingH, width: 24 * calWidth, height: 24 * calWidth }} /> : null}
+        /> : <TouchableOpacity hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }} style={[styles.input]} onPress={onPressInput}>
+          <View  >
+            <Text style={{ color: Colors.neutralGrey, }}>{placeholder}</Text>
+          </View></TouchableOpacity>}
+        {iconRight && iconRight && <Image source={iconRight} style={{ marginHorizontal: mainPaddingH, width: 24 * calWidth, height: 24 * calWidth }} />}
       </View>
       {!!error && <Text style={{ marginTop: 7, color: 'red', fontSize: 12 }}>{error}</Text>}
     </View>
@@ -65,7 +69,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-
     flex: 1,
     marginLeft: 12,
     color: Colors.neutralGrey,

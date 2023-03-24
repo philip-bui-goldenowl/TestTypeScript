@@ -27,6 +27,8 @@ const SwiperHorizontal = ({ products, handleChooseSwipper }: Props) => {
   }
 
 
+
+
   return (
     <Swiper
       showsPagination

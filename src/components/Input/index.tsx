@@ -1,5 +1,5 @@
 import { Colors } from '@/assets/styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TextInput, Image, StyleSheet, TextInputProps } from 'react-native';
 import Text from '../Text';
 interface Props extends TextInputProps {
@@ -8,12 +8,13 @@ interface Props extends TextInputProps {
   style?: object,
   error: string,
   onFocus?: () => void,
-  password?: string,
+  isPassword?: boolean,
   placeholder?: string,
 }
-const Input = ({ label, icon, style, error, password, onFocus = () => { }, ...props }: Props) => {
-  const [hidePassword, setHidePassword] = useState(password ? true : false);
+const Input = ({ label, icon, style, error, isPassword, onFocus = () => { }, ...props }: Props) => {
+  //const [hidePassword, setHidePassword] = useState(password ? true : false);
   const [isFocused, setIsFocused] = useState(false);
+
   return (
     <View style={{ marginBottom: 20 }}>
       {!!label && <Text style={styles.label}>{label}</Text>}
@@ -34,7 +35,7 @@ const Input = ({ label, icon, style, error, password, onFocus = () => { }, ...pr
             setIsFocused(true);
           }}
           onBlur={() => setIsFocused(false)}
-          secureTextEntry={hidePassword}
+          secureTextEntry={isPassword}
           style={styles.txtInput}
           placeholderTextColor={Colors.neutralGrey}
           {...props}

@@ -28,6 +28,7 @@ import { UPDATE_AVATAR } from '@/utils/queries'
 import { clearAuth, setInfoUser } from '@/store/auth/slice'
 import Service from '@/services/service'
 import StoredData from '@/utils/StoredData'
+import FastImage from 'react-native-fast-image'
 interface Source {
   uri: string | undefined,
   type: string | undefined,
@@ -100,12 +101,14 @@ const Profile = ({ navigation }: ProfileProps) => {
       <SafeAreaView />
       <View style={styles.viewWrapper}>
         <View style={styles.viewProfile}>
-          <View style={styles.row}>
-            {loading && <ActivityIndicator size={'large'} color={Colors.primaryBlue} style={{ position: 'absolute', zIndex: 10 }} />}
-            <Image onLoadStart={() => setLoading(true)}
-              onLoadEnd={() => setLoading(false)} source={user?.avatar ? { uri: user?.avatar } : avatar} style={styles.avatar} />
-          </View>
           <TouchableOpacity onPress={selectPhotoTapped}>
+            <View style={styles.row}>
+              {loading && <ActivityIndicator size={'large'} color={Colors.primaryBlue} style={{ position: 'absolute', zIndex: 10 }} />}
+              <FastImage onLoadStart={() => setLoading(true)}
+                onLoadEnd={() => setLoading(false)} source={user?.avatar ? { uri: user?.avatar } : avatar} style={styles.avatar} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate(ScreenName.UPDATE_INFO_USER)}>
             <View style={styles.viewAvatarName}>
               <Text style={styles.titleName}>{user?.name}</Text>
               <Text style={styles.gmail}>{user?.email}</Text>
@@ -116,6 +119,7 @@ const Profile = ({ navigation }: ProfileProps) => {
           image={dateBlue}
           label="Birthday"
           value="12-12-2000"
+          disabled
         />
         <ProfileItem
           image={messageBlue}
@@ -127,11 +131,8 @@ const Profile = ({ navigation }: ProfileProps) => {
         <ProfileItem
           image={phoneBlue}
           label="Phone Number"
+          disabled
           value={user?.phone.toString()}
-          nextScreen={() => navigation.navigate(ScreenName.PHONE, {
-            phone: user?.phone,
-            userId: user?.id,
-          })}
         />
         <ProfileItem
           image={passIcon}

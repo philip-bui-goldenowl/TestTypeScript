@@ -1,9 +1,10 @@
 import icons from '@/assets/icons';
 import { calWidth, Colors, mainPaddingH, TypoGrayphy } from '@/assets/styles';
-import { CategoryCard, ProductCart, Text } from '@/components';
+import { CategoryCard, MainTitle, ProductCart, Text } from '@/components';
 import LoadingIndicator from '@/components/Loading';
+import { ScreenName } from '@/constants';
 import { SearchProps } from '@/types/navigation';
-import { Category } from '@/types/order';
+import { Category, Order } from '@/types/order';
 import { SEARCH_CATEGORY } from '@/utils/queries';
 import { useLazyQuery } from '@apollo/client';
 import React, { useState } from 'react';
@@ -14,19 +15,29 @@ const SearchScreen = ({ navigation }: SearchProps) => {
 
   const [value, setValue] = useState<string>()
   const [category, setCategory] = useState<Category[]>([])
+  const [orders, setOrders] = useState<Order[]>([])
 
-  const [searchCategory, { called, loading, data }] = useLazyQuery(SEARCH_CATEGORY);
+  const [GetSearch, { called, loading, data }] = useLazyQuery(SEARCH_CATEGORY);
   const handleSearch = async () => {
-    const res = await searchCategory({
+    const res = await GetSearch({
       variables: {
         search: `%${value}%`
       },
     })
+    console.log("afafafafaf", res.data);
+
     setCategory(res.data?.category)
+    setOrders(res.data?.order)
   }
 
   if (loading) {
     return <LoadingIndicator modalVisible />
+  }
+  const handleViewProductDetail = (order: Order) => {
+    navigation.navigate(ScreenName.PRODUCT_DETAIL, {
+      id: order.id,
+      name: order.product
+    })
   }
 
   return (
@@ -54,6 +65,8 @@ const SearchScreen = ({ navigation }: SearchProps) => {
           </TouchableOpacity>
         </View>
         <View >
+          {category.length > 0 && <View style={{ marginTop: 16 }}>
+            <MainTitle title="Category" /></View>}
           <FlatList
             data={category}
             style={{ marginLeft: mainPaddingH, marginTop: 12 * calWidth }}
@@ -70,6 +83,33 @@ const SearchScreen = ({ navigation }: SearchProps) => {
               )
             }}
             keyExtractor={(item) => `Productline list ${item.id}`}
+          />
+
+          {orders.length > 0 && <MainTitle title="Products" />}
+          <FlatList
+            data={orders}
+            style={{ marginLeft: mainPaddingH, marginTop: 12 * calWidth }}
+            horizontal
+            ItemSeparatorComponent={() => {
+              return (
+                <View
+                  style={styles.dividerHorizontal} />
+              );
+            }}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => {
+              return (
+                <ProductCart
+                  margin={mainPaddingH}
+                  product={item}
+                  style={styles.productCard}
+                  handleChooseItem={() => {
+                    handleViewProductDetail(item)
+                  }}
+                />
+              )
+            }}
+            keyExtractor={(item) => `Productline list one ${item.id}`}
           />
         </View>
       </View>

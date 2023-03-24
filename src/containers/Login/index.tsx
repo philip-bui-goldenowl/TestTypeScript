@@ -5,11 +5,11 @@ import {
 import { useDispatch, } from 'react-redux'
 // import { showMessage } from 'react-native-flash-message'
 import { Text, Button } from '@/components'
-import {
-  logoWhite, message,
+import icons, {
+  logoWhite, message, iconFB, iconGoogle
 } from '@/assets/icons'
-import { useLazyQuery } from '@apollo/client'
-import { LOGIN_USER } from '@/utils/queries'
+import { useLazyQuery, useMutation } from '@apollo/client'
+import { LOGIN_USER, SAVE_USER } from '@/utils/queries'
 import { setInfoUser } from '@/store/auth/slice'
 import { ScreenName, StorageKey } from '@/constants'
 import Input from '@/components/Input'
@@ -18,6 +18,16 @@ import StoredData from '@/utils/StoredData'
 import { User } from '@/types/user'
 import { LoginProps } from '@/types/navigation'
 import styles from './styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { LoginManager, Profile } from 'react-native-fbsdk-next';
+import { appleAuth, AppleButton } from '@invertase/react-native-apple-authentication';
+
+// import {
+//   AccessToken,
+//   GraphRequest,
+//   GraphRequestManager,
+//   LoginManager,
+// } from 'react-native-fbsdk';
 
 
 const LoginScreen = (props: LoginProps) => {
@@ -30,6 +40,7 @@ const LoginScreen = (props: LoginProps) => {
   });
   const [modalVisible, setModalVisible] = useState(false)
   const [LOGIN] = useLazyQuery(LOGIN_USER);
+  const [InsertUser] = useMutation(SAVE_USER);
 
   const dispatch = useDispatch()
 
@@ -59,6 +70,71 @@ const LoginScreen = (props: LoginProps) => {
 
     return isValid;
   };
+  const saveUser = async (name: string, email: string) => {
+    const res = await InsertUser({
+      variables: {
+        name: name,
+        email: email,
+      }
+    })
+
+    if (res.data) {
+      const user = res.data?.insert_user?.returning
+      await dispatch(setInfoUser(user[0]))
+      await StoredData.set(StorageKey.memberId, user[0].id)
+      navigation.navigate(ScreenName.MAIN_TAB)
+    }
+
+  }
+  const onAppleButtonPress = async () => {
+    // 1). start a apple sign-in request
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      // 2). if the request was successful, extract the token and nonce
+      //const { identityToken, nonce } = appleAuthRequestResponse;
+      console.log("afafafafafafaaf", appleAuthRequestResponse.user);
+
+
+      const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        // user is authenticated
+      }
+    } catch (error) {
+      console.log("erorroror", error);
+
+    }
+  }
+  const loginWithFacebook = () => {
+    // Attempt a login using the Facebook login dialog asking for default permissions.
+    LoginManager.logInWithPermissions(["public_profile"]).then(
+      function (result) {
+        if (result.isCancelled) {
+          console.log("Login cancelled");
+        } else {
+          console.log(
+            "Login success with permissions: "
+          );
+          Profile.getCurrentProfile().then(
+            function (currentProfile) {
+              if (currentProfile) {
+                const name = currentProfile.name ?? 'userName'
+                const email = currentProfile.email ?? ""
+                saveUser(name, email)
+
+              }
+            }
+          );
+        }
+      },
+      function (error) {
+        console.log("Login fail with error: " + error);
+      }
+    );
+  };
   const handleLogin = async () => {
     const valid = validate()
     if (valid) {
@@ -85,6 +161,7 @@ const LoginScreen = (props: LoginProps) => {
   const handleRegister = () => {
     //navigation.navigate(SCREEN_NAME.RegisterScreen)
   }
+  const { bottom } = useSafeAreaInsets()
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -111,6 +188,7 @@ const LoginScreen = (props: LoginProps) => {
             //returnKeyType={'next'}
             onSubmitEditing={() => { }}
             value={password}
+            isPassword
             keyboardType="default"
             autoCapitalize="none"
             onChangeText={(text) => handleInput(setPassword, text)}
@@ -119,25 +197,49 @@ const LoginScreen = (props: LoginProps) => {
           <View style={styles.viewButton}>
             <Button name="Sign In" handleClick={handleLogin} />
           </View>
-          {/* <View style={styles.viewDivider}>
+          <View style={styles.viewDivider}>
             <View style={styles.divider} />
             <Text style={styles.labelDivider}>
               Or
             </Text>
             <View style={styles.divider} />
-          </View> */}
-          {/* <View style={styles.viewLoginSocial}>
-            <Image source={iconGoogle} style={styles.imageSocial} resizeMode="contain" />
-            <Text style={styles.labelSocial}>
-              Login with google
-            </Text>
-          </View> */}
-          {/* <View style={styles.viewLoginSocial}>
-            <Image source={iconFB} style={styles.imageSocial} resizeMode="contain" />
-            <Text style={styles.labelSocial}>
-              Login with facebook
-            </Text>
-          </View> */}
+          </View>
+          <TouchableOpacity onPress={onAppleButtonPress}>
+            <View style={styles.viewLoginSocial}>
+              <Image source={iconGoogle} style={styles.imageSocial} resizeMode="contain" />
+              <Text style={styles.labelSocial}>
+                Login with apple
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={loginWithFacebook}>
+            <View style={styles.viewLoginSocial}>
+              <Image source={iconFB} style={styles.imageSocial} resizeMode="contain" />
+              <Text style={styles.labelSocial}>
+                Login with facebook
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <View>
+            {/* <LoginButton
+              //style={{ width: 500 }}
+              onLoginFinished={
+                (error, result) => {
+                  if (error) {
+                    console.log("login has error: " + result.error);
+                  } else if (result.isCancelled) {
+                    console.log("login is cancelled.");
+                  } else {
+                    AccessToken.getCurrentAccessToken().then(
+                      (data) => {
+                        console.log(data.accessToken.toString())
+                      }
+                    )
+                  }
+                }
+              }
+              onLogoutFinished={() => console.log("logout.")} /> */}
+          </View>
           {/* <TouchableOpacity>
             <Text style={styles.labelForgotPass}>Forget password</Text>
           </TouchableOpacity> */}

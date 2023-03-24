@@ -2,7 +2,7 @@ import { ApolloClient, ApolloError, DocumentNode, gql, NetworkStatus, Observable
 
 export const GET_ORDER = gql`
 query GetOrder($limit: Int = 5) {
-  order(limit: $limit) {
+  order(limit: $limit,order_by: {id: desc}) {
     customer_id
     discount_price
     id
@@ -25,7 +25,48 @@ query GetSearch($search: String!) {
     title,
     image
   }
+  order(where:{
+    product: {_ilike: $search}
+  }) {
+    customer_id
+    discount_price
+    id
+    order_date
+    product
+    purchase_price
+    image
+  }
 }`
+export const FILTER_PRODUCT = gql`
+query filterProduct($where: order_bool_exp){
+  order(where:$where) {
+      customer_id
+      discount_price
+      id
+      order_date
+      product
+      purchase_price
+      image
+    }
+  
+}
+`
+export const FILTER_COLOR_PRODUCT = gql`
+query filterProduct($filter: String){
+  order(where:{
+    color: {_eq: $filter}
+    }) {
+      customer_id
+      discount_price
+      id
+      order_date
+      product
+      purchase_price
+      image
+    }
+  
+}
+`
 
 export const GET_CATEGORY = gql`
 query GetCategory {
@@ -43,7 +84,21 @@ query LOGIN($email: String!, $pass: String!) {
     name, 
     phone,
     email,
-    avatar
+    avatar,
+    birthday
+  }
+}`
+export const SAVE_USER = gql`
+mutation InsertUser($name: String!, $email: String!) {
+  insert_user(objects: {name: $name, email: $email, pass: "123"}) {
+    returning {
+    id
+    name, 
+    phone,
+    email,
+    avatar,
+    birthday
+    }
   }
 }`
 export const GET_USER = gql`
@@ -53,7 +108,8 @@ query GetUser($_id: Int!) {
     name,
     phone,
     email,
-    avatar
+    avatar,
+    birthday
   }
 }
 `
@@ -92,11 +148,13 @@ mutation UpdatePassword($id: Int!, $pass: String!){
 }
 `
 export const UPDATE_PROFILE = gql`
-mutation UpdateProfile($id: Int!, $phone: Int!){
+mutation UpdateProfile($id: Int!, $phone: Int!, $email: String!,$birthday: String! ){
   update_user_by_pk(pk_columns: {
     id:$id
   }, _set: {
     phone: $phone,
+    email: $email,
+    birthday: $birthday
   }){
     id,
     name,

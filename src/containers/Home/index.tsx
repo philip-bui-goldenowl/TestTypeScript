@@ -44,8 +44,6 @@ const HomeScreen = ({ navigation }: HomeProps) => {
   }
 
   const handleViewProductDetail = (order: Order) => {
-    console.log("orderrr", order.id);
-
     navigation.navigate(ScreenName.PRODUCT_DETAIL, {
       id: order.id,
       name: order.product
@@ -72,8 +70,6 @@ const HomeScreen = ({ navigation }: HomeProps) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log("valuessss");
-
       getData(5)
     }, [navigation])
   )
@@ -166,7 +162,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
                   />
                 </View>
                 <View>
-                  <MainTitle title="Flash Sale" btnTitle="See More" />
+                  <MainTitle title="Flash Sale" btnTitle="See More" onBtnRightPress={() => navigation.navigate(ScreenName.PRODUCT)} />
                   <FlatList
                     data={listOrder}
                     style={{ marginLeft: mainPaddingH, marginTop: 12 * calWidth }}
@@ -236,7 +232,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
         modalVisible={modalVisible}
         setShowModal={() => setModalVisible(!modalVisible)} />
       <InsertModal
-        title='adaf'
+        title='Thêm sản phẩm'
         onUpdateCategory={(title) => { }}
         modalVisible={modalAddVisible}
         setShowModal={() => setModalAddVisible(!modalAddVisible)} />

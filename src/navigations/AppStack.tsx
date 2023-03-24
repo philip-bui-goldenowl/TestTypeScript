@@ -12,8 +12,13 @@ import Profile from '@/containers/Profile';
 import UpdatePassword from '@/containers/Profile/UpdatePassword';
 import Phone from '@/containers/Profile/Phone';
 import ProductDetail from '@/containers/ProductDetail';
+import { Settings } from 'react-native-fbsdk-next';
+import UpdateInfoUser from '@/containers/Profile/UpdateInfoUser';
+import Product from '@/containers/Product';
+import ShortBy from '@/containers/ShortBy';
 
 
+Settings.initializeSDK();
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainStackParamList>();
 const AppStack = () => {
@@ -44,6 +49,9 @@ const AppStack = () => {
       <RootStack.Screen name={ScreenName.UPDATE_PASSWORD} component={UpdatePassword} />
       <RootStack.Screen name={ScreenName.PHONE} component={Phone} />
       <RootStack.Screen name={ScreenName.PRODUCT_DETAIL} component={ProductDetail} />
+      <RootStack.Screen name={ScreenName.UPDATE_INFO_USER} component={UpdateInfoUser} />
+      <RootStack.Screen name={ScreenName.PRODUCT} component={Product} />
+      <RootStack.Screen name={ScreenName.SHORT_BY} component={ShortBy} />
     </RootStack.Navigator>
   );
 };

@@ -13,7 +13,10 @@ export enum ScreenName {
   PROFILE = 'Profile',
   UPDATE_PASSWORD = 'UpdatePassword',
   PHONE = 'Phone',
-  PRODUCT_DETAIL = 'ProductDetail'
+  PRODUCT_DETAIL = 'ProductDetail',
+  UPDATE_INFO_USER = 'UpdateInfoUser',
+  PRODUCT = 'Product',
+  SHORT_BY = 'ShortBy'
 }
 
 export enum StorageKey {
@@ -29,6 +32,12 @@ export enum RequestStatus {
   fulfilled = 'fulfilled',
   rejected = 'rejected',
 };
+
+export enum FilterSearch {
+  SIZE = 'size',
+  COLOR = 'color',
+  TITLE = 'title'
+}
 
 export const MenuTab = [
   {

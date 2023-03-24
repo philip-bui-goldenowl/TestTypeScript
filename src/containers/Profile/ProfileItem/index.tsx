@@ -28,7 +28,7 @@ const ProfileItem = (props: Props) => {
         </View>
         <View style={{ flexDirection: 'row' }}>
           <Text style={{ marginRight: mainPaddingH, color: Colors.neutralGrey }}>{value}</Text>
-          <Image source={rightICon} resizeMode="contain" style={{ width: 24 * calWidth, height: 24 * calWidth }} />
+          {!disabled && <Image source={rightICon} resizeMode="contain" style={{ width: 24 * calWidth, height: 24 * calWidth }} />}
         </View>
       </View>
     </TouchableOpacity>

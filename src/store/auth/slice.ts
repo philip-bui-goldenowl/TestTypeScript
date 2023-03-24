@@ -15,6 +15,7 @@ const authInitialState: AuthInitialState = {
     phone: 0,
     id: undefined,
     avatar: '',
+    birthday: ''
   }
 }
 const slice = createSlice({
@@ -26,7 +27,7 @@ const slice = createSlice({
       state.user = user
     },
     clearAuth: (state) => {
-      state.user = null
+      state.user = authInitialState.user
     },
   },
 });
