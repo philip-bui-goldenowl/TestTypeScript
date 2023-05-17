@@ -26,19 +26,6 @@ const CalendarPicker = ({ onDayPress, isVisible }: Props) => {
         <View style={styles.overlay} onStartShouldSetResponder={() => true}>
           <TouchableWithoutFeedback>
             <View style={styles.calendarContainer}>
-              {/* <FCTextInput
-                  underlineColorAndroid="transparent"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  placeholder="YYYY"
-                  style={styles.textInput}
-                  returnKeyType="done"
-                  keyboardType={'number-pad'}
-                  defaultValue={current ? String(dayjs(current, 'YYYY-MM-DD').year()) : year}
-                  maxLength={4}
-                  clearTextOnFocus
-                  onSubmitEditing={e => this.setState({ year: e.nativeEvent.text, current: null })}
-                /> */}
               <Calendar
                 current={current || `${year}-01-01`}
                 enableSwipeMonths

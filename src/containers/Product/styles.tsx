@@ -2,6 +2,8 @@ import { calWidth, Colors, mainPaddingH, TypoGrayphy } from '@/assets/styles';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  titleNotFound: { ...TypoGrayphy.bodyLargeTextBold, marginBottom: 24, marginTop: -16 },
+  emptyComponent: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100 },
   dividerHorizontal: {
     height: "100%",
     width: 16,

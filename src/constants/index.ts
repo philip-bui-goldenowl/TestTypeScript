@@ -16,7 +16,8 @@ export enum ScreenName {
   PRODUCT_DETAIL = 'ProductDetail',
   UPDATE_INFO_USER = 'UpdateInfoUser',
   PRODUCT = 'Product',
-  SHORT_BY = 'ShortBy'
+  SHORT_BY = 'ShortBy',
+  REGISTER = 'Register',
 }
 
 export enum StorageKey {

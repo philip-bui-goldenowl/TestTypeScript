@@ -18,12 +18,8 @@ const ShortBy = ({ navigation }: ShortByProps) => {
   const handleChooseFilter = async (filter: string) => {
     setSelectFilter(filter)
     setShowModal(true)
-    //await dispatch(updateShortBy(filter))
-    //navigation.goBack()
   }
   const handleUpdateFilter = async (filter: string) => {
-    console.log("afafafafaafafaf", filter);
-
     await dispatch(updateShortBy({
       shortBy: selectFilter,
       value: filter
@@ -33,11 +29,11 @@ const ShortBy = ({ navigation }: ShortByProps) => {
   return (
     <View >
       <HeaderCommon title='Short By' navigation={navigation} />
-      <View style={{ marginLeft: 16, marginTop: 16 }}>
+      <View style={styles.viewFilter}>
         {filterList.map((filter) => {
           return (
-            <TouchableOpacity onPress={() => handleChooseFilter(filter)}>
-              <View key={filter} style={[{ marginBottom: 8, padding: 8 }, selectFilter === filter && { backgroundColor: Colors.neutralLine }]}  >
+            <TouchableOpacity key={filter} onPress={() => handleChooseFilter(filter)}>
+              <View key={filter} style={[styles.sortBy, selectFilter === filter && { backgroundColor: Colors.neutralLine }]}  >
                 <Text style={[styles.textButton, { color: selectFilter === filter ? Colors.primaryBlue : Colors.neutralDark }]} >{`Short By: ${filter}`}</Text>
               </View>
             </TouchableOpacity>
@@ -50,6 +46,8 @@ const ShortBy = ({ navigation }: ShortByProps) => {
 }
 
 const styles = StyleSheet.create({
+  sortBy: { marginBottom: 8, padding: 8 },
+  viewFilter: { marginLeft: 16, marginTop: 16 },
   textButton: { ...TypoGrayphy.linkLargeTextBold14 }
 })
 export default ShortBy

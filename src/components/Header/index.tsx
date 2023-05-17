@@ -38,7 +38,7 @@ const HeaderComponent = ({ navigation, onFocus, handleClick, iconRight, iconNext
         </TouchableOpacity>
       </View>
 
-      <View style={{ flexDirection: 'row' }}>
+      {/* <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity onPress={() => navigation.navigate('Favorite')}>
           <Image
             source={iconNextRight && iconNextRight ? iconNextRight : icons.love}
@@ -60,7 +60,7 @@ const HeaderComponent = ({ navigation, onFocus, handleClick, iconRight, iconNext
             <View style={styles.dotNotification} />
           </View>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   )
 }

@@ -21,6 +21,7 @@ import LoadingComponent from './Loading'
 import styles from './styles';
 import ModalScreen from './Modal'
 import { ImagePickerResponse } from '@/utils/UpdateImage'
+import ModalLoadingIndicator from '@/components/ModalLoading'
 
 const ProductDetail = ({ navigation, route }: ProductDetailProps) => {
   const { id } = route.params
@@ -43,7 +44,6 @@ const ProductDetail = ({ navigation, route }: ProductDetailProps) => {
 
   useEffect(() => {
     if (!loading) {
-
       setCurrentColor(product.color)
       setCurrentSize(product.size)
     }
@@ -85,7 +85,7 @@ const ProductDetail = ({ navigation, route }: ProductDetailProps) => {
       ]
     })
     if (response.data?.update_order_by_pk) {
-      Alert.alert('Cập nhật sản phẩm thành công')
+      Alert.alert('Update product success')
     }
 
   }
@@ -95,7 +95,7 @@ const ProductDetail = ({ navigation, route }: ProductDetailProps) => {
 
   if (loading) {
     return <View style={styles.loading}>
-      <LoadingComponent />
+      <ModalLoadingIndicator />
     </View>
   }
   return (

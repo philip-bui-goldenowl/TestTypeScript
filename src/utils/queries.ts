@@ -88,6 +88,19 @@ query LOGIN($email: String!, $pass: String!) {
     birthday
   }
 }`
+export const REGISTER_USER = gql`
+mutation REGISTER($name: String!, $email: String!, $pass: String!) {
+  insert_user(objects: {name: $name, email: $email, pass: $pass}) {
+    returning {
+    id
+    name, 
+    phone,
+    email,
+    avatar,
+    birthday
+    }
+  }
+}`
 export const SAVE_USER = gql`
 mutation InsertUser($name: String!, $email: String!) {
   insert_user(objects: {name: $name, email: $email, pass: "123"}) {

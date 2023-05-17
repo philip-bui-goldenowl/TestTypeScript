@@ -23,28 +23,32 @@ const CategoryItem = ({ category, style, onPressCategory }: Props) => {
         ...style,
       }}
       >
-        <View style={{
-          width: 70 * calWidth,
-          height: 70 * calWidth,
-          borderRadius: 35 * calWidth,
-          borderWidth: StyleSheet.hairlineWidth,
-          justifyContent: 'center',
-          borderColor: Colors.neutralLine,
-          alignItems: 'center',
-          marginBottom: 8 * calWidth,
-        }}
-        >
-          <FastImage source={{ uri: category.image }} style={{ width: 70 * calWidth, height: 70 * calWidth, borderRadius: 35 * calWidth }} resizeMode="cover" />
+        <View style={styles.category} >
+          <FastImage source={{ uri: category.image }} style={styles.image} resizeMode="cover" />
         </View>
-        <Text style={{
-          ...TypoGrayphy.captionLargeTextRegular10, color: Colors.neutralGrey, textAlign: 'center', width: 70 * calWidth,
-        }}
-        >
+        <Text style={styles.title} >
           {category.title}
         </Text>
       </View>
     </TouchableOpacity>
   )
 }
+
+const styles = StyleSheet.create({
+  image: { width: 70 * calWidth, height: 70 * calWidth, borderRadius: 35 * calWidth },
+  title: {
+    ...TypoGrayphy.captionLargeTextRegular10, color: Colors.neutralGrey, textAlign: 'center', width: 70 * calWidth,
+  },
+  category: {
+    width: 70 * calWidth,
+    height: 70 * calWidth,
+    borderRadius: 35 * calWidth,
+    borderWidth: StyleSheet.hairlineWidth,
+    justifyContent: 'center',
+    borderColor: Colors.neutralLine,
+    alignItems: 'center',
+    marginBottom: 8 * calWidth,
+  }
+})
 
 export default CategoryItem

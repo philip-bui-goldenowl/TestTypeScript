@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  View, TextInput, StyleSheet, Image, TouchableOpacity,
+  View, TextInput, StyleSheet, Image, TouchableOpacity, Keyboard
 } from 'react-native'
 import {
   calWidth,
@@ -20,9 +20,15 @@ interface Props {
   secure?: boolean,
   error?: string,
   isInput?: boolean,
+  value?: string,
+  type?: string,
   onPressInput?: () => void,
 }
-const Input = ({ onPressInput, isInput, label, iconRight, placeholder, iconLeft, handleOnchange, onFocus, isActive, secure, error, ...props }: Props) => {
+const Input = ({ onPressInput, value, isInput, label, iconRight, placeholder, iconLeft, type,
+  handleOnchange, onFocus, isActive, secure, error, ...props }: Props) => {
+
+
+
 
   return (
     <View style={{
@@ -44,6 +50,7 @@ const Input = ({ onPressInput, isInput, label, iconRight, placeholder, iconLeft,
           {...props}
           autoCorrect={false}
           style={styles.input}
+          value={value}
           placeholder={placeholder}
           onFocus={onFocus}
           onChangeText={(text) => handleOnchange(text)}

@@ -1,6 +1,6 @@
-import icons from '@/assets/icons';
-import { mainPaddingH } from '@/assets/styles';
-import { HeaderCommon, ProductCart } from '@/components';
+import icons, { notFound } from '@/assets/icons';
+import { calWidth, mainPaddingH, TypoGrayphy } from '@/assets/styles';
+import { Button, HeaderCommon, ProductCart, Text } from '@/components';
 import { FilterSearch, ScreenName } from '@/constants';
 import { RootState } from '@/store';
 import { ProductProps } from '@/types/navigation';
@@ -9,12 +9,13 @@ import { Filtered } from '@/types/product';
 import { FILTER_PRODUCT, GET_ORDER } from '@/utils/queries';
 import { useLazyQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, View } from 'react-native';
+import { FlatList, Image, SafeAreaView, useWindowDimensions, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import styles from './styles';
 
 
 const Product = ({ navigation }: ProductProps) => {
+  const { width } = useWindowDimensions()
   const [GetOrder] = useLazyQuery<CategoryList>(GET_ORDER);
   const [filterProduct] = useLazyQuery(FILTER_PRODUCT);
   const [products, setProducts] = useState<Order[]>([])
@@ -99,6 +100,14 @@ const Product = ({ navigation }: ProductProps) => {
       />
       <FlatList data={products ?? []}
         numColumns={2}
+        //contentContainerStyle={{ flex: 1 }}
+        ListEmptyComponent={
+          <View style={styles.emptyComponent}>
+            <Image source={notFound} />
+            <Text style={styles.titleNotFound}>Product not found</Text>
+            <Button name="Back to home" style={{ width: width * 0.8 }} handleClick={() => navigation.goBack()} />
+          </View>
+        }
         columnWrapperStyle={{
           justifyContent: 'space-between',
           marginTop: mainPaddingH,

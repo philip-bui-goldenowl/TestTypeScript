@@ -22,6 +22,7 @@ export type RootStackParamList = {
   UpdateInfoUser: undefined;
   Product: undefined,
   ShortBy: undefined,
+  Register: undefined,
 };
 
 export type MainStackParamList = {

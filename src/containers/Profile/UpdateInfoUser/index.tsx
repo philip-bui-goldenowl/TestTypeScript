@@ -23,7 +23,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store'
 import CalendarPicker from '../Calander'
 const UpdateInfoUser = ({ route, navigation }: UpdateInfoUserProps) => {
-  const [value, setValue] = useState('')
   const [isActive, setIsActive] = useState(false)
   const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
@@ -33,12 +32,41 @@ const UpdateInfoUser = ({ route, navigation }: UpdateInfoUserProps) => {
     phone: user.phone,
     birthDay: user.birthday
   });
+  const [errors, setErrors] = useState({
+    email: '',
+    pass: ''
+  });
+  const handleError = (error: string, input: string) => {
+    setErrors((prevState) => ({ ...prevState, [input]: error }));
+  };
 
 
 
   const [UpdateProfile] = useMutation(UPDATE_PROFILE);
+  const validate = () => {
+    let isValid = true;
+    if (!info.email) {
+      handleError('Please enter email', 'email');
+      isValid = false;
+    } else if (!info.email.match(/\S+@\S+\.\S+/)) {
+      handleError('Email error', 'email');
+      isValid = false;
+    } else {
+      handleError('', 'email');
+    }
+
+    // if (!info.) {
+    //   handleError('Please enter password', 'pass');
+    //   isValid = false;
+    // } else {
+    //   handleError('', 'pass');
+    // }
+
+    return isValid;
+  };
   const handleButtonSave = async () => {
-    if (info) {
+    const valid = validate()
+    if (info && valid) {
       const response = await UpdateProfile({
         variables: {
           id: user.id,
@@ -50,7 +78,7 @@ const UpdateInfoUser = ({ route, navigation }: UpdateInfoUserProps) => {
       if (response.data?.update_user_by_pk) {
         const user: User = response.data?.update_user_by_pk
         dispatch(setInfoUser(user))
-        Alert.alert('Cập nhật thông tin thành công')
+        Alert.alert('Update info success')
         navigation.goBack()
       }
 
@@ -69,7 +97,6 @@ const UpdateInfoUser = ({ route, navigation }: UpdateInfoUserProps) => {
   }
 
   const handleGetDay = (date: any) => {
-    //console.log("afafafaafaf", date);
     handleSetInfo(date?.dateString, 'birthDay')
     setVisible(!visible)
   }
@@ -84,15 +111,18 @@ const UpdateInfoUser = ({ route, navigation }: UpdateInfoUserProps) => {
         <TextInput
           iconLeft={phoneBlue}
           label="Email"
-          placeholder={info.email}
+          value={info.email}
+          type="email"
           handleOnchange={(text) => handleSetInfo(text, 'email')}
           onFocus={handleOnFocus}
+          error={errors.email}
           isActive={isActive}
         />
         <TextInput
           iconLeft={phoneBlue}
           label="Phone"
-          placeholder={info.phone.toString()}
+          type="phone"
+          value={info.phone.toString()}
           handleOnchange={(text) => handleSetInfo(text, 'phone')}
           onFocus={handleOnFocus}
           isActive={isActive}
@@ -102,7 +132,7 @@ const UpdateInfoUser = ({ route, navigation }: UpdateInfoUserProps) => {
           label="BirthDay"
           isInput
           handleOnchange={() => { }}
-          placeholder={info.birthDay ?? 'Ngày sinh'}
+          placeholder={info.birthDay ?? 'Date'}
           onPressInput={handleOnchange}
           onFocus={handleOnFocus}
           isActive={isActive}

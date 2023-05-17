@@ -110,8 +110,6 @@ const HomeScreen = ({ navigation }: HomeProps) => {
       }
     })
     getData(5)
-    console.log("value login", response);
-
   }
 
 
@@ -184,7 +182,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
                         />
                       )
                     }}
-                    keyExtractor={(item) => `Productline list one ${item.id}`}
+                    keyExtractor={(item) => `Productline_list_one_${item.id}`}
                   />
                 </View>
                 <View style={{ marginTop: 24 * calWidth }}>
@@ -232,7 +230,7 @@ const HomeScreen = ({ navigation }: HomeProps) => {
         modalVisible={modalVisible}
         setShowModal={() => setModalVisible(!modalVisible)} />
       <InsertModal
-        title='Thêm sản phẩm'
+        title='Add product'
         onUpdateCategory={(title) => { }}
         modalVisible={modalAddVisible}
         setShowModal={() => setModalAddVisible(!modalAddVisible)} />

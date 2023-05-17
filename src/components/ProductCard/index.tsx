@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View, Dimensions, StyleSheet,
 } from 'react-native'
@@ -7,6 +7,7 @@ import Text from '../Text'
 import { TypoGrayphy, Colors } from '../../assets/styles'
 import { Order } from '@/types/order'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import LoadingComponent from '@/containers/ProductDetail/Loading'
 
 const { width } = Dimensions.get('window')
 const calWidth = width / 375
@@ -16,8 +17,9 @@ interface Props {
   style?: any,
   margin?: number,
 }
-const ProductCart = ({ product, handleChooseItem, style, margin, }: Props) => {
+const ProductCart = ({ product, handleChooseItem, style, margin }: Props) => {
   const widthImage = width / 2 - 64
+  const [loadingAvatar, setLoadingAvatar] = useState(false)
   return (
     <TouchableOpacity onPress={handleChooseItem}>
       <View style={[{
@@ -38,8 +40,11 @@ const ProductCart = ({ product, handleChooseItem, style, margin, }: Props) => {
               borderRadius: 5 * calWidth,
             }
           }
+          // onLoadStart={() => setLoadingAvatar(true)}
+          // onLoadEnd={() => setLoadingAvatar(false)}
           resizeMode="cover"
         />
+        {/* {loadingAvatar && <LoadingComponent />} */}
         {/* <Image
           resizeMode="contain"
           source={productLike}

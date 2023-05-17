@@ -6,9 +6,14 @@ import {
   TypoGrayphy, calWidth, mainPaddingH, Colors,
 } from '../../assets/styles'
 import Text from '../Text'
+interface Props {
+  name: string,
+  style?: object,
+  color?: string,
+  handleClick: () => void
+}
 
-
-const ButtonComponent = (props: any) => {
+const ButtonComponent = (props: Props) => {
   const {
     name, handleClick, style, color,
   } = props

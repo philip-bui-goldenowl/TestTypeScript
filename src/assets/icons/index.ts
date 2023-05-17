@@ -33,11 +33,12 @@ export const minus = require('./minus_16.png')
 export const list = require('./list.png')
 export const star = require('./star.png')
 export const phoduct2 = require('./phoduct2.png')
+export const notFound = require('./notFound.png')
 const upload = require('./upload.png')
 const filter = require('./filter.png')
-import iconClose from './iconClose.png';
-import logoutIcon from './logoutIcon.png';
-import starActive from './starActive.png';
+// import iconClose from './iconClose.png';
+// import logoutIcon from './logoutIcon.png';
+// import starActive from './starActive.png';
 import home from './home.png';
 import cart from './cart.png';
 import offer from './offer.png';
@@ -46,9 +47,11 @@ import promotionImage from './promotionImage.png';
 import notification from './notification.png';
 import love from './love_24.png';
 import userIcon from './user.png';
+import apple from './apple.png';
 
 
 export default {
+  apple,
   filter,
   upload,
   userIcon,

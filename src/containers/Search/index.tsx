@@ -1,7 +1,7 @@
 import icons from '@/assets/icons';
 import { calWidth, Colors, mainPaddingH, TypoGrayphy } from '@/assets/styles';
-import { CategoryCard, MainTitle, ProductCart, Text } from '@/components';
-import LoadingIndicator from '@/components/Loading';
+import { CategoryCard, HeaderCommon, MainTitle, ProductCart } from '@/components';
+import ModalLoadingIndicator from '@/components/ModalLoading';
 import { ScreenName } from '@/constants';
 import { SearchProps } from '@/types/navigation';
 import { Category, Order } from '@/types/order';
@@ -24,14 +24,13 @@ const SearchScreen = ({ navigation }: SearchProps) => {
         search: `%${value}%`
       },
     })
-    console.log("afafafafaf", res.data);
 
     setCategory(res.data?.category)
     setOrders(res.data?.order)
   }
 
   if (loading) {
-    return <LoadingIndicator modalVisible />
+    return <ModalLoadingIndicator />
   }
   const handleViewProductDetail = (order: Order) => {
     navigation.navigate(ScreenName.PRODUCT_DETAIL, {
@@ -43,9 +42,11 @@ const SearchScreen = ({ navigation }: SearchProps) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text>Go back</Text>
-        </TouchableOpacity>
+        <HeaderCommon
+          title={'Search'}
+          navigation={navigation}
+          disabled={false}
+        />
         <View style={{ marginHorizontal: 16, marginTop: 16 }}>
           <TouchableOpacity onPress={() => { }}>
             <View style={[styles.search, { borderColor: Colors.neutralLine }]}>
@@ -57,6 +58,7 @@ const SearchScreen = ({ navigation }: SearchProps) => {
               <TextInput
                 onChangeText={(text) => setValue(text)}
                 placeholder="Search"
+                value={value}
                 style={{ flex: 1, marginLeft: mainPaddingH, color: Colors.neutralDark }}
                 onSubmitEditing={handleSearch}
               // onFocus={() => handleFocus()}

@@ -14,3 +14,4 @@ export type ProductDetailProps = NativeStackScreenProps<RootStackParamList, Scre
 export type UpdateInfoUserProps = NativeStackScreenProps<RootStackParamList, ScreenName.UPDATE_INFO_USER>;
 export type ProductProps = NativeStackScreenProps<RootStackParamList, ScreenName.PRODUCT>;
 export type ShortByProps = NativeStackScreenProps<RootStackParamList, ScreenName.SHORT_BY>;
+export type RegisterProps = NativeStackScreenProps<RootStackParamList, ScreenName.REGISTER>;

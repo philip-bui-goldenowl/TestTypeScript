@@ -16,6 +16,7 @@ import { Settings } from 'react-native-fbsdk-next';
 import UpdateInfoUser from '@/containers/Profile/UpdateInfoUser';
 import Product from '@/containers/Product';
 import ShortBy from '@/containers/ShortBy';
+import RegisterScreen from '@/containers/Register';
 
 
 Settings.initializeSDK();
@@ -52,6 +53,7 @@ const AppStack = () => {
       <RootStack.Screen name={ScreenName.UPDATE_INFO_USER} component={UpdateInfoUser} />
       <RootStack.Screen name={ScreenName.PRODUCT} component={Product} />
       <RootStack.Screen name={ScreenName.SHORT_BY} component={ShortBy} />
+      <RootStack.Screen name={ScreenName.REGISTER} component={RegisterScreen} />
     </RootStack.Navigator>
   );
 };

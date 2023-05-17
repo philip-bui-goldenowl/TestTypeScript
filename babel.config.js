@@ -13,6 +13,7 @@ plugins.push([
 ]);
 
 plugins.push(['module:react-native-dotenv']);
+plugins.push(['react-native-reanimated/plugin']);
 
 module.exports = {
   presets,
